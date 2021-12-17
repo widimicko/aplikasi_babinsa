@@ -3,7 +3,10 @@
 namespace App\Controllers;
 
 use \Myth\Auth\Models\UserModel;
+
 use App\Models\PiketModel;
+use App\Models\LaporanModel;
+use App\Models\LampiranModel;
 
 class Piket extends BaseController {
   
@@ -11,6 +14,8 @@ class Piket extends BaseController {
   {
     $this->userModel = new UserModel();
     $this->piketModel = new PiketModel();
+    $this->laporanModel = new LaporanModel();
+    $this->lampiranModel = new LampiranModel();
   }
 
   public function add()
@@ -77,6 +82,31 @@ class Piket extends BaseController {
     $this->piketModel->delete($id);
 
     return redirect()->to('/piket')->with('tx_success_message', 'Piket pada "'. $piket['tanggal'] .'" berhasil dihapus');
-}
+  }
+
+  public function laporan($id)
+	{
+
+    $piket = $this->piketModel->getDetailPiket($id)[0];
+    $laporan = $this->laporanModel->where('id_piket', $id)->find();
+    $lampiran = $this->lampiranModel->where('id_piket', $id)->findAll();
+
+    $data = [
+      'title'=> 'Ubah Piket',
+      'piket' => $piket,
+      'laporan' => $laporan,
+      'lampirans' => $lampiran,
+    ];
+    return view('piket/laporan/index', $data);
+	}
+
+  public function download_lampiran($id)
+	{
+    $lampiran = $this->lampiranModel->find($id);
+
+    $filePath = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .'image/lampiran/' . $lampiran['lampiran'];
+
+    return $this->response->download($filePath, null);
+	}
 
 }

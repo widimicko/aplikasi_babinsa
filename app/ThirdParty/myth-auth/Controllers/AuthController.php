@@ -317,17 +317,20 @@ class AuthController extends Controller
 
 		// Save the reset hash /
 		$user->generateResetHash();
+		
 		$users->save($user);
 
-		$resetter = service('resetter');
-		$sent = $resetter->send($user);
+		$message = 'Email anda = ' . $user->email. '<br> Kode Reset Anda (Token) = ' .$user->reset_hash;
 
-		if (! $sent)
-		{
-			return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
-		}
+		// $resetter = service('resetter');
+		// $sent = $resetter->send($user);
 
-		return redirect()->to('reset-password')->with('message', lang('Auth.forgotEmailSent'));
+		// if (! $sent)
+		// {
+		// 	return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
+		// }
+
+		return redirect()->to('reset-password')->with('message', $message);
 	}
 
 	/**

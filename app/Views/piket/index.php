@@ -40,7 +40,7 @@
               <th>Nama</th>
               <th>Tanggal</th>
               <th>Dibuat pada</th>
-              <?= !in_groups('member') ? '<th>Aksi</th>' : '' ?>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -54,13 +54,16 @@
                 <td><?= date_format($date,"D\, d F Y") ?></td>         
                 <td><?= $piket['created_at'] ?></td>
                 <td>
-                <?php 
-                  if(!in_groups('member')) {
+                <?php
+                  if (!in_groups('member')) {
                     echo '<a href="'.base_url('piket/laporan/'. $piket['id']) .'" class="btn btn-info">Laporan</a>';
-                    if (in_groups('admin')) {
-                      echo '<a href="'.base_url('piket/edit/'. $piket['id']) .'" class="btn btn-info">Edit</a>';
-                      echo '<a href="'.base_url('piket/delete/'. $piket['id']) .'" class="btn btn-danger">Hapus</a>';
-                    }
+                  } else {
+                    echo '<a href="'.base_url('member/piket/laporan/'. $piket['id']) .'" class="btn btn-info">Laporan</a>';
+                  }
+                  
+                  if (in_groups('admin')) {
+                    echo '<a href="'.base_url('piket/edit/'. $piket['id']) .'" class="btn btn-warning">Edit</a>';
+                    echo '<a href="'.base_url('piket/delete/'. $piket['id']) .'" class="btn btn-danger">Hapus</a>';
                   }
                 ?>
                 </td>

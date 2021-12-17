@@ -11,15 +11,6 @@
 <hr class="sidebar-divider my-0 mt-4">
 
 
-<?php if(in_groups('member')) : ?>
-<li class="nav-item">
-  <a class="nav-link" href="<?= base_url('member') ?>">
-    <i class="fas fa-user"></i>
-    <span class="color-white">Profil</span>
-  </a>
-</li>
-<?php endif ?>
-
 <div class="sidebar-heading color-white">
    Manajemen
 </div>
@@ -34,21 +25,20 @@
 <?php endif ?>
 
 <li class="nav-item">
-  <a class="nav-link" href="<?= base_url('piket') ?>">
+  <a class="nav-link" href="<?= !in_groups('member') ? base_url('piket') : base_url('member') ?>">
     <i class="fas fa-clock"></i>
     <span class="color-white">Jadwal Piket</span>
   </a>
 </li>
 
-<?php if(in_groups('admin')) : ?>
+<hr class="sidebar-divider d-none d-md-block">
+
 <li class="nav-item">
-  <a class="nav-link" href="<?= base_url('user') ?>">
-    <i class="fas fa-users"></i>
-    <span class="color-white">Pengguna</span>
+  <a class="nav-link" href="#" data-toggle="modal" data-target="#changePasswordModal">
+    <i class="fas fa-key"></i>
+    <span class="color-white">Ganti Password</span>
   </a>
 </li>
-<?php endif ?>
-
 
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">

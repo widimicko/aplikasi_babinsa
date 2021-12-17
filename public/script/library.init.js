@@ -102,4 +102,6 @@ $(document).ready(function() {
 
 });
 
-
+window.onload = function() {
+  CKEDITOR.replace( 'ckeditor' );
+};

@@ -84,6 +84,29 @@
         </div>
     </div>
 
+    <!-- Change Password Modal-->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Ganti Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="<?= route_to('forgot') ?>" method="POST">
+                    <div class="modal-body">Silahkan tekan tombol "Keluar" untuk konfirmasi.</div>
+                    <input type="hidden" name="email" value="<?= user()->email ?>">
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url() ?>/library/jquery/jquery.min.js"></script>
@@ -100,7 +123,9 @@
     <script type="text/javascript" src="<?= base_url() ?>/library/datatable/vfs_fonts.js"></script>
     <script type="text/javascript" src="<?= base_url() ?>/library/datatable/datatables.full.min.js"></script>
 
-
+    <!-- CKEditor 4 -->
+    <script src="<?= base_url() ?>/library/ckeditor/ckeditor.js"></script>
+    
     <!-- Select Search -->
     <script src="<?= base_url() ?>/library/select2/select2.full.min.js"></script>
 
