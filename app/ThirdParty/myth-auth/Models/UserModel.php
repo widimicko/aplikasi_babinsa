@@ -10,22 +10,23 @@ class UserModel extends Model
     protected $primaryKey = 'id';
 
     protected $returnType = User::class;
-    protected $useSoftDeletes = true;
+
 
     protected $allowedFields = [
         'email', 'username', 'password_hash', 'reset_hash', 'reset_at', 'reset_expires', 'activate_hash',
         'status', 'status_message', 'active', 'force_pass_reset', 'permissions', 'deleted_at',
+        'name', 'birthdate', 'rank', 'picture'
     ];
 
     protected $useTimestamps = true;
 
-    protected $validationRules = [
-        'email'         => 'required|valid_email|is_unique[users.email,id,{id}]',
-        'username'      => 'required|alpha_numeric_punct|min_length[3]|max_length[30]|is_unique[users.username,id,{id}]',
-        'password_hash' => 'required',
-    ];
-    protected $validationMessages = [];
-    protected $skipValidation = false;
+    // protected $validationRules = [
+    //     'email'         => 'required|valid_email|is_unique[users.email,id,{id}]',
+    //     'username'      => 'required|alpha_numeric_punct|min_length[3]|max_length[30]|is_unique[users.username,id,{id}]',
+    //     'password_hash' => 'required',
+    // ];
+    // protected $validationMessages = [];
+    // protected $skipValidation = false;
 
     protected $afterInsert = ['addToGroup'];
 
@@ -121,4 +122,28 @@ class UserModel extends Model
         return $data;
     }
 
+    // * =================================
+    //  * Custom Function
+    // * =================================
+
+    public function getAllMember() {
+        $builder = $this->db->table('users');
+        $builder->select('users.id as id, users.username as username, users.email as email, users.name as name, users.birthdate as birthdate, users.rank as rank, users.picture as picture, users.created_at as created_at, users.updated_at as updated_at');
+        $builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $builder->where('auth_groups_users.group_id', 3);
+
+        $query = $builder->get();
+    
+        return $query->getResultArray();
+    }
+
+    public function getMember($id) {
+        $builder = $this->db->table('users');
+        $builder->select('id, username, name, birthdate, rank, picture, created_at,updated_at');
+        $builder->where('id', $id);
+
+        $query = $builder->get();
+    
+        return $query->getResultArray();
+    }
 }

@@ -62,7 +62,7 @@ class Auth extends BaseConfig
 	 * @var string[]
 	 */
 	public $validFields = [
-		'username',
+		'username', 'email'
 	];
 
 	/**
@@ -83,7 +83,9 @@ class Auth extends BaseConfig
 	 *
 	 * @var string[]
 	 */
-	public $personalFields = [];
+	public $personalFields = [
+		'name', 'birthdate', 'rank', 'password', 'picture'
+	];
 
 	/**
 	 * --------------------------------------------------------------------

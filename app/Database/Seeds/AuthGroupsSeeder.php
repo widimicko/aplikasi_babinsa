@@ -16,13 +16,13 @@ class AuthGroupsSeeder extends Seeder
         ],
         [
           'id' => 2,
-          'name' => 'member',
-          'description' => 'Member Account',
+          'name' => 'leader',
+          'description' => 'Leader Account',
         ],
         [
           'id' => 3,
-          'name' => 'leader',
-          'description' => 'Leader Account',
+          'name' => 'member',
+          'description' => 'Member Account',
         ],
       ];
 

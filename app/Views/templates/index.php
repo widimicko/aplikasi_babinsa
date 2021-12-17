@@ -19,6 +19,8 @@
     <link href="<?= base_url() ?>/library/select2/select2.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="<?= base_url() ?>/library/sb-admin/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom Style -->
+    <link href="<?= base_url() ?>/css/admin.css" rel="stylesheet">
 
   </head>
   <body id="page-top">
@@ -104,6 +106,9 @@
 
     <!-- Library init Script -->
     <script src="<?= base_url() ?>/script/library.init.js"></script>
+
+    <!-- Custom cript -->
+    <script src="<?= base_url() ?>/script/script.js"></script>
 
   </body>
 </html>

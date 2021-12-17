@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f192071a9203cb02679627cb0d5a579a",
+    "content-hash": "af02efbe4c13c04f2c25898d432a0ec2",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -63,6 +63,57 @@
                 "source": "https://github.com/codeigniter4/CodeIgniter4"
             },
             "time": "2021-11-08T15:09:23+00:00"
+        },
+        {
+            "name": "eihror/compress-image",
+            "version": "v0.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eihror/compress-image.git",
+                "reference": "1efa57d1180e6018b1b7482db5d41e5f721dc509"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eihror/compress-image/zipball/1efa57d1180e6018b1b7482db5d41e5f721dc509",
+                "reference": "1efa57d1180e6018b1b7482db5d41e5f721dc509",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ],
+                "psr-4": {
+                    "Eihror\\Compress\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eihror",
+                    "email": "igor_gmelo@hotmail.com",
+                    "homepage": "http://www.igormelo.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Compress your image without losing quality",
+            "homepage": "https://github.com/eihror/compress-image",
+            "support": {
+                "issues": "https://github.com/eihror/compress-image/issues",
+                "source": "https://github.com/eihror/compress-image/tree/v0.0.6"
+            },
+            "time": "2018-08-03T19:30:08+00:00"
         },
         {
             "name": "kint-php/kint",

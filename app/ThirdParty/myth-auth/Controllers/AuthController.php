@@ -6,6 +6,8 @@ use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
+use App\Controllers\ImageCompressor;
+
 class AuthController extends Controller
 {
 	protected $auth;
@@ -96,7 +98,15 @@ class AuthController extends Controller
 			return redirect()->to(route_to('reset-password') .'?token='. $this->auth->user()->reset_hash)->withCookies();
 		}
 
-		$redirectURL = session('redirect_url') ?? site_url('/');
+		if (array_key_exists(1, $this->auth->user()->roles)) {
+			$redirectURL = session('redirect_url') ?? site_url('/babinsa');
+		} else if (array_key_exists(2, $this->auth->user()->roles)) {
+			$redirectURL = session('redirect_url') ?? site_url('/babinsa'); 
+		} else if (array_key_exists(3, $this->auth->user()->roles)) {
+			$redirectURL = session('redirect_url') ?? site_url('/member');
+		}
+
+
 		unset($_SESSION['redirect_url']);
 
 		return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
@@ -142,8 +152,12 @@ class AuthController extends Controller
 	/**
 	 * Attempt to register a new user.
 	 */
+
+	
+
 	public function attemptRegister()
 	{
+
 		// Check if registration is allowed
 		if (! $this->config->allowRegistration)
 		{
@@ -154,29 +168,72 @@ class AuthController extends Controller
 
 		// Validate basics first since some password rules rely on these fields
 		$rules = [
-			'username' => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
-			'email'    => 'required|valid_email|is_unique[users.email]',
+			'username' => 'required|min_length[7]|max_length[8]|is_unique[users.username]',
+			'email'    => [
+				'rules' => 'required|valid_email|is_unique[users.email]',
+				'errors' => [
+					'required' => 'Mohon atur kembali kolom nama dan tanggal lahir'
+				],
+			],
 		];
 
 		if (! $this->validate($rules))
 		{
+			session()->setFlashData('tx_error_message', 'Gagal, ');
 			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
 
 		// Validate passwords since they can only be validated properly here
 		$rules = [
-			'password'     => 'required|strong_password',
+			'password'     => [
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Mohon atur kembali kolom nama dan tanggal lahir'
+				]
+			],
 			'pass_confirm' => 'required|matches[password]',
 		];
 
+
 		if (! $this->validate($rules))
 		{
+			session()->setFlashData('tx_error_message', 'Gagal, ');
 			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
 
-		// Save the user
+
+		// Validate file uploaded
+		if(!$this->validate([
+			'picture' => 'is_image[picture]|mime_in[picture,image/jpg,image/jpeg,image/png]',
+		])) {
+			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+		}
+
+
 		$allowedPostFields = array_merge(['password'], $this->config->validFields, $this->config->personalFields);
-		$user = new User($this->request->getPost($allowedPostFields));
+		
+		$uploadedFile = $this->request->getFile('picture');
+
+		if ($uploadedFile->getError() == 4) {
+      return redirect()->back()->withInput()->with('tx_error_message', 'Gambar profil wajib diisi');
+		} else if ($uploadedFile->getError() !== 4) {
+			$list = $users->where('picture', $uploadedFile->getName())->findAll();
+			if (!empty($list)) {
+        return redirect()->back()->withInput()->with('tx_error_message', 'Gambar "'. $uploadedFile->getName() .'" sudah ada dalam server');
+      }
+
+			$uploadedFile->move('image/babinsa/');
+			$imageCompressor = new ImageCompressor('babinsa', $uploadedFile->getName());
+			unlink('image/babinsa/'. $uploadedFile->getName());
+		}
+
+		$request = $this->request->getPost($allowedPostFields);
+		$request['name'] = ucwords($this->request->getPost('name'));
+		$request['picture'] = $imageCompressor->new_name_image;
+
+		// dd($request);
+
+		$user = new User($request);
 
 		$this->config->requireActivation === null ? $user->activate() : $user->generateActivateHash();
 
@@ -201,11 +258,12 @@ class AuthController extends Controller
 			}
 
 			// Success!
-			return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
+			return redirect()->to('login')->with('message', lang('Auth.activationSuccess'));
 		}
 
 		// Success!
-		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+		// session()->setFlashData('tx_error_message', 'Gambar "'. $uploadedFile->getName() .'" sudah ada dalam server');
+		return redirect()->to('babinsa')->with('tx_success_message', 'Anggota "'. $request['name'].'" berhasil ditambahkan');
 	}
 
 	//--------------------------------------------------------------------
@@ -219,7 +277,7 @@ class AuthController extends Controller
 	{
 		if ($this->config->activeResetter === null)
 		{
-			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+			return redirect()->to('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
 		return $this->_render($this->config->views['forgot'], ['config' => $this->config]);
@@ -233,7 +291,7 @@ class AuthController extends Controller
 	{
 		if ($this->config->activeResetter === null)
 		{
-			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+			return redirect()->to('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
 		$rules = [
@@ -269,7 +327,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
 		}
 
-		return redirect()->route('reset-password')->with('message', lang('Auth.forgotEmailSent'));
+		return redirect()->to('reset-password')->with('message', lang('Auth.forgotEmailSent'));
 	}
 
 	/**
@@ -279,7 +337,7 @@ class AuthController extends Controller
 	{
 		if ($this->config->activeResetter === null)
 		{
-			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+			return redirect()->to('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
 		$token = $this->request->getGet('token');
@@ -300,7 +358,7 @@ class AuthController extends Controller
 	{
 		if ($this->config->activeResetter === null)
 		{
-			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+			return redirect()->to('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
 		$users = model(UserModel::class);
@@ -348,7 +406,7 @@ class AuthController extends Controller
         $user->force_pass_reset = false;
 		$users->save($user);
 
-		return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
+		return redirect()->to('login')->with('message', lang('Auth.resetSuccess'));
 	}
 
 	/**
@@ -380,14 +438,14 @@ class AuthController extends Controller
 
 		if (is_null($user))
 		{
-			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+			return redirect()->to('login')->with('error', lang('Auth.activationNoUser'));
 		}
 
 		$user->activate();
 
 		$users->save($user);
 
-		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+		return redirect()->to('login')->with('message', lang('Auth.registerSuccess'));
 	}
 
 	/**
@@ -399,7 +457,7 @@ class AuthController extends Controller
 	{
 		if ($this->config->requireActivation === null)
 		{
-			return redirect()->route('login');
+			return redirect()->to('login');
 		}
 
 		$throttler = service('throttler');
@@ -420,7 +478,7 @@ class AuthController extends Controller
 
 		if (is_null($user))
 		{
-			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+			return redirect()->to('login')->with('error', lang('Auth.activationNoUser'));
 		}
 
 		$activator = service('activator');
@@ -432,7 +490,7 @@ class AuthController extends Controller
 		}
 
 		// Success!
-		return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
+		return redirect()->to('login')->with('message', lang('Auth.activationSuccess'));
 
 	}
 

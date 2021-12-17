@@ -41,7 +41,7 @@
 						<?= csrf_field() ?>
 
 						<?php if ($config->validFields === ['email']) : ?>
-							<div class="form-group">
+							<div class="mb-3 form-group">
 								<label for="login"><?= lang('Auth.email') ?></label>
 								<input type="email" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" name="login" placeholder="<?= lang('Auth.email') ?>">
 								<div class="invalid-feedback">
@@ -49,7 +49,7 @@
 								</div>
 							</div>
 						<?php else : ?>
-							<div class="form-group">
+							<div class="mb-3 form-group">
 								<label for="login"><?= lang('Auth.emailOrUsername') ?></label>
 								<input type="text" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" name="login" placeholder="<?= lang('Auth.emailOrUsername') ?>">
 								<div class="invalid-feedback">
@@ -58,7 +58,7 @@
 							</div>
 						<?php endif; ?>
 
-						<div class="form-group">
+						<div class="mb-3 form-group">
 							<label for="password"><?= lang('Auth.password') ?></label>
 							<input type="password" name="password" class="form-control  <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>">
 							<div class="invalid-feedback">

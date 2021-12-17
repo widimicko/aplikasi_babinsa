@@ -11,11 +11,6 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
     require SYSTEMPATH . 'Config/Routes.php';
 }
 
-/*
- * --------------------------------------------------------------------
- * Router Setup
- * --------------------------------------------------------------------
- */
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
@@ -23,29 +18,36 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
-/*
- * --------------------------------------------------------------------
- * Route Definitions
- * --------------------------------------------------------------------
- */
+
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
 
-/*
- * --------------------------------------------------------------------
- * Additional Routing
- * --------------------------------------------------------------------
- *
- * There will often be times that you need additional routing and you
- * need it to be able to override any defaults in this file. Environment
- * based routes is one such time. require() additional route files here
- * to make that happen.
- *
- * You will have access to the $routes object within that file without
- * needing to reload it.
- */
+
+//  TODO: Admin Routers
+$routes->get('/', 'Home::index', ['filter' => 'role:admin']);
+$routes->get('/admin', 'Home::index', ['filter' => 'role:admin']);
+
+$routes->get('/babinsa', 'Home::index', ['filter' => 'role:admin,leader']);
+
+// TODO: Babinsa CRUD
+$routes->get('/babinsa/add', 'Babinsa::add', ['filter' => 'role:admin']);
+$routes->get('/babinsa/edit/(:num)', 'Babinsa::edit/$1', ['filter' => 'role:admin']);
+$routes->post('/babinsa/update/(:num)', 'Babinsa::update/$1', ['filter' => 'role:admin']);
+$routes->get('/babinsa/delete/(:num)', 'Babinsa::delete/$1', ['filter' => 'role:admin']);
+
+// TODO: Piket CRUD
+$routes->get('/piket', 'Home::piket', ['filter' => 'role:admin']);
+
+
+
+$routes->get('/leader', 'Admin::index', ['filter' => 'role:leader']);
+
+
+$routes->get('/member', 'Admin::index', ['filter' => 'role:member']);
+
+
+
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

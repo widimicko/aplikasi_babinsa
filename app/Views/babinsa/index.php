@@ -6,6 +6,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
+
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800">Pengelolaan Anggota</h1>
 
@@ -25,69 +26,54 @@
     <div class="card-header py-3 d-flex justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">Tabel Data Anggota</h6>
       <div class="d-flex">
-        <a href="#" class="btn btn-primary mr-3" data-toggle="modal" data-target="#createModal">+ Tambah</a>
+        <?= in_groups('admin') ? '<a href="'. base_url('babinsa/add') .'" class="btn btn-primary mr-3">+ Tambah</a>' : '' ?>
       </div>
     </div>
     <div class="card-body">
       <div class="table-responsive">
         <table class="tableData table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
+            <!-- id	username	email	name	birthdate	rank	picture	created_at	updated_at -->
             <tr>
-              <th>No</th>             
+              <th>No</th>
+              <th>Gambar</th>        
+              <th>NRP</th>
               <th>Nama</th>
-              <th>Aksi</th>
+              <th>Pangkat</th>
+              <th>Tanggal lahir</th>
+              <th>Terakhir diubah</th>
+              <?= array_key_exists(1, user()->getRoles()) ? '<th>Aksi</th>' : '' ?>
             </tr>
           </thead>
           <tbody>
-            <?php 
-              $faker = Faker\Factory::create();
-            ?>
-            <?php for ($i = 0; $i <= 10; $i++ ) : ?>
+            <?php $i = 1 ?>
+            <?php foreach ($babinsas as $babinsa) : ?>
               <tr>
-                <td><?= $i ?></td>
-                <td><?= $faker->name ?></td>         
+                <td><?= $i++ ?></td>
                 <td>
-                  <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editModal">Ubah</a>
-                  <a href="<?= base_url('babinsa/delete/'. $faker->randomKey) ?>" class="btn btn-danger">Hapus</a>
-                </td>
+                  <img src="<?= base_url('image/babinsa/'. $babinsa['picture']) ?>" alt="<?= $babinsa['picture'] ?>" class="image-admin img-fluid"><br>
+                  <?= $babinsa['picture'] ?>
+                </td> 
+                <td><?= $babinsa['username'] ?></td>     
+                <td><?= $babinsa['name'] ?></td>     
+                <td><?= $babinsa['rank'] ?></td>     
+                <td><?= $babinsa['birthdate'] ?></td>     
+                <td><?= $babinsa['updated_at'] ?></td>
+                <?php 
+                  if(in_groups('admin')) {
+                    echo '<td>';
+                    echo '<a href="'.base_url('babinsa/edit/'. $babinsa['id']) .'" class="btn btn-info">Edit</a>';
+                    echo 'a href="'.base_url('babinsa/delete/'. $babinsa['id']) .'" class="btn btn-danger">Hapus</a>';
+                    echo '</td>';
+                  }
+                ?>
               </tr>
-            <?php endfor; ?>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-
-
-<script>
-  // Table onRowClick event
-  const table = document.querySelector(".tableData")
-
-  if (table) {
-    for (let i = 0; i < table.rows.length; i++) {
-      table.rows[i].onclick = function() {
-        getDataRow(this)
-      }
-    }
-  }
-
-  function getDataRow(tableRow) {
-    // Get row data
-    const nis = tableRow.childNodes[3].innerHTML
-    const nama = tableRow.childNodes[5].innerHTML
-    let kelas = tableRow.childNodes[7].innerHTML
-
-    if (kelas == '<div class="alert alert-success">Lulus</div>') {
-      kelas = 7
-    }
-
-    // set to modal
-    document.getElementById('editForm').setAttribute('action', `${window.location.origin}/siswa/update/${nis}`)
-    document.getElementById('input-nis').setAttribute("value", nis)
-    document.getElementById('input-nama').setAttribute("value", nama)
-    document.getElementById('input-kelas').setAttribute("value", kelas)
-  }
-</script>
 
 </div>
 <!-- /.container-fluid -->
