@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="<?= base_url('image/?????.png') ?>">
+    <link rel="icon" href="<?= base_url('image/logo_tniad.png') ?>">
    
 
     <title>Aplikasi Koramil 0827/18 Kangean | <?= $title ?></title>

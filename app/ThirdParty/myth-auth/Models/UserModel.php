@@ -146,4 +146,15 @@ class UserModel extends Model
     
         return $query->getResultArray();
     }
+
+    public function getListSelectMember() {
+        $builder = $this->db->table('users');
+        $builder->select('users.id as id, users.username as username, users.name as name');
+        $builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $builder->where('auth_groups_users.group_id', 3);
+
+        $query = $builder->get();
+    
+        return $query->getResultArray();
+    }
 }

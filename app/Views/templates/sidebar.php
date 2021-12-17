@@ -3,7 +3,7 @@
 
 <!-- Sidebar - Brand -->
 <a class="mt-4 sidebar-brand d-flex align-items-center justify-content-center" href="/">
-  <img src="<?= base_url('image/?????????.png') ?>"  class="img-fluid" alt="Logo" width="75px" height="75px">
+  <img src="<?= base_url('image/logo_tniad.png') ?>"  class="img-fluid" alt="Logo" width="75px" height="75px">
   <div class="mt-4 sidebar-brand-text mx-auto">Aplikasi Koramil 0827/18 Kangean</div>
 </a>
 

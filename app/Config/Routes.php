@@ -25,10 +25,10 @@ $routes->setAutoRoute(true);
 
 
 //  TODO: Admin Routers
-$routes->get('/', 'Home::index', ['filter' => 'role:admin']);
-$routes->get('/admin', 'Home::index', ['filter' => 'role:admin']);
+$routes->get('/', 'Home::babinsa', ['filter' => 'role:admin']);
+$routes->get('/admin', 'Home::babinsa', ['filter' => 'role:admin']);
 
-$routes->get('/babinsa', 'Home::index', ['filter' => 'role:admin,leader']);
+$routes->get('/babinsa', 'Home::babinsa', ['filter' => 'role:admin,leader']);
 
 // TODO: Babinsa CRUD
 $routes->get('/babinsa/add', 'Babinsa::add', ['filter' => 'role:admin']);
@@ -37,11 +37,14 @@ $routes->post('/babinsa/update/(:num)', 'Babinsa::update/$1', ['filter' => 'role
 $routes->get('/babinsa/delete/(:num)', 'Babinsa::delete/$1', ['filter' => 'role:admin']);
 
 // TODO: Piket CRUD
-$routes->get('/piket', 'Home::piket', ['filter' => 'role:admin']);
+$routes->get('/piket', 'Home::piket', ['filter' => 'role:admin,leader']);
+$routes->get('/piket/add', 'Piket::add', ['filter' => 'role:admin']);
+$routes->post('/piket/create', 'Piket::create', ['filter' => 'role:admin']);
+$routes->get('/piket/edit/(:num)', 'Piket::edit/$1', ['filter' => 'role:admin']);
+$routes->post('/piket/update/(:num)', 'Piket::update/$1', ['filter' => 'role:admin']);
 
 
-
-$routes->get('/leader', 'Admin::index', ['filter' => 'role:leader']);
+$routes->get('/leader', 'Home::babinsa', ['filter' => 'role:admin,leader']);
 
 
 $routes->get('/member', 'Admin::index', ['filter' => 'role:member']);
