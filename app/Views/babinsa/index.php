@@ -48,6 +48,12 @@
           <tbody>
             <?php $i = 1 ?>
             <?php foreach ($babinsas as $babinsa) : ?>
+
+              <?php
+                if ($babinsa['id'] == 3) {
+                  continue;
+                }  
+              ?>
               <tr>
                 <td><?= $i++ ?></td>
                 <td>

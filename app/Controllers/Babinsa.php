@@ -83,8 +83,9 @@ class Babinsa extends BaseController
 		if(empty($babinsa)) {
 				return redirect()->back()->withInput()->with('tx_error_message', 'Data tidak ditemukan');
 		}
+		
 
-		unlink('image/babinsa/'. $babinsa['picture']);
+		// unlink('image/babinsa/'. $babinsa['picture']);
 
 		$this->userModel->delete($id);
 

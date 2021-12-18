@@ -24,6 +24,11 @@
             <div class="col-sm-10">
               <select class="select2 form-control <?= session('errors.id_babinsa') ? 'is-invalid' : '' ?>" name="id_babinsa" required>
               <?php foreach ($babinsas as $babinsa) : ?>
+                  <?php
+                    if ($babinsa['id'] == 3) {
+                      continue;
+                    }  
+                  ?>
                   <option value="<?= $babinsa['id'] ?>"
                   <?= old('id_babinsa') == $babinsa['id'] ? 'selected' : '' ?>
                   ><?= $babinsa['name'] ?> (<?= $babinsa['username'] ?>)</option>
