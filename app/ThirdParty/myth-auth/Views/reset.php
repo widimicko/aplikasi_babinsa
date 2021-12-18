@@ -16,7 +16,7 @@
                     <form action="<?= route_to('reset-password') ?>" method="post">
                         <?= csrf_field() ?>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="token"><?=lang('Auth.token')?></label>
                             <input type="text" class="form-control <?php if(session('errors.token')) : ?>is-invalid<?php endif ?>"
                                    name="token" placeholder="<?=lang('Auth.token')?>" value="<?= old('token', $token ?? '') ?>">
@@ -56,7 +56,7 @@
 
                         <br>
 
-                        <button type="submit" class="btn btn-primary btn-block"><?=lang('Auth.resetPassword')?></button>
+                        <button type="submit" class="btn btn-block" style="background-color: #0B6623; color: white;"><?=lang('Auth.resetPassword')?></button>
                     </form>
 
                 </div>

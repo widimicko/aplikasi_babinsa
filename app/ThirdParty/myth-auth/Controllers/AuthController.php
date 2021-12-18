@@ -32,16 +32,7 @@ class AuthController extends Controller
 		$this->auth = service('authentication');
 	}
 
-	//--------------------------------------------------------------------
-	// Login/out
-	//--------------------------------------------------------------------
-
-	/**
-	 * Displays the login form, or redirects
-	 * the user to their destination/home if
-	 * they are already logged in.
-	 */
-	public function login()
+	public function landing()
 	{
 		// No need to show a login form if the user
 		// is already logged in.
@@ -53,10 +44,44 @@ class AuthController extends Controller
 			return redirect()->to($redirectURL);
 		}
 
-        // Set a return URL if none is specified
-        $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? site_url('/');
+			// Set a return URL if none is specified
+			$_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? site_url('/landing');
 
-		return $this->_render($this->config->views['login'], ['config' => $this->config]);
+			$this->session->set('landing', true);
+
+		return $this->_render($this->config->views['landing'], ['config' => $this->config]);
+	}
+
+	//--------------------------------------------------------------------
+	// Login/out
+	//--------------------------------------------------------------------
+	/**
+	 * Displays the login form, or redirects
+	 * the user to their destination/home if
+	 * they are already logged in.
+	 */
+	public function login()
+	{
+
+		// No need to show a login form if the user
+		// is already logged in.
+		if ($this->auth->check()) {
+			$redirectURL = session('redirect_url') ?? site_url('/');
+			unset($_SESSION['redirect_url']);
+			return redirect()->to($redirectURL);
+		} else if (!$this->auth->check() && !$this->session->get('landing')) {
+			return redirect()->to('landing');
+		} else if ($this->session->get('landing')) {
+			$this->session->set('landing', false);
+			return $this->_render($this->config->views['login'], ['config' => $this->config]);
+		}
+		
+		
+
+		// // Set a return URL if none is specified
+		// $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? site_url('/landing');
+
+		// return $this->_render($this->config->views['login'], ['config' => $this->config]);
 	}
 
 	/**
@@ -65,6 +90,7 @@ class AuthController extends Controller
 	 */
 	public function attemptLogin()
 	{
+
 		$rules = [
 			'login'	=> 'required',
 			'password' => 'required',
@@ -98,14 +124,11 @@ class AuthController extends Controller
 			return redirect()->to(route_to('reset-password') .'?token='. $this->auth->user()->reset_hash)->withCookies();
 		}
 
-		if (array_key_exists(1, $this->auth->user()->roles)) {
-			$redirectURL = session('redirect_url') ?? site_url('/babinsa');
-		} else if (array_key_exists(2, $this->auth->user()->roles)) {
-			$redirectURL = session('redirect_url') ?? site_url('/babinsa'); 
+		if (array_key_exists(1, $this->auth->user()->roles) || array_key_exists(2, $this->auth->user()->roles)) {
+			$redirectURL =  site_url('/babinsa');
 		} else if (array_key_exists(3, $this->auth->user()->roles)) {
-			$redirectURL = session('redirect_url') ?? site_url('/member');
+			$redirectURL =  site_url('/home');
 		}
-
 
 		unset($_SESSION['redirect_url']);
 

@@ -18,7 +18,7 @@
 <?php if(in_groups('admin') || in_groups('leader')) : ?>
 <li class="nav-item">
   <a class="nav-link" href="<?= base_url('babinsa') ?>">
-    <i class="fas fa-server"></i>
+    <i class="fas fa-users"></i>
     <span class="color-white">Babinsa</span>
   </a>
 </li>

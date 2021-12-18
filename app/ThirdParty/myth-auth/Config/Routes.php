@@ -5,6 +5,7 @@
  */
 $routes->group('', ['namespace' => 'Myth\Auth\Controllers'], function ($routes) {
     // Login/out
+    $routes->get('landing', 'AuthController::landing', ['as' => 'landing']);
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');
     $routes->get('logout', 'AuthController::logout');

@@ -18,7 +18,7 @@ class Home extends BaseController
 
     public function re_route() {
         if (in_groups('admin') || in_groups('leader')) {
-            return redirect()->to('babinsa');
+            return redirect()->to('home');
 
         } else {
             return redirect()->to('member');

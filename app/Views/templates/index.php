@@ -13,6 +13,7 @@
     <!-- Custom fonts for this template -->
     <link href="<?= base_url() ?>/library/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core -->
+    <link rel="stylesheet" href="<?= base_url() ?>/library/bootstrap-4.6.1/bootstrap.min.css"/>
     <!-- Data tables -->
     <link rel="stylesheet" href="<?= base_url() ?>/library/datatable/datatables.full.min.css"/>
     <!-- Select Search -->
@@ -110,7 +111,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url() ?>/library/jquery/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/library/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/library/bootstrap-4.6.1/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="<?= base_url() ?>/library/jquery/jquery.easing.min.js"></script>

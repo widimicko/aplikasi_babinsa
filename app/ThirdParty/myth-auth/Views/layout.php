@@ -11,7 +11,8 @@
     <title>Aplikasi Koramil 0827/18 Kangean</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?= base_url('library/bootstrap/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?= base_url('library/bootstrap-5.1.3/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?= base_url('css/auth.css') ?>" rel="stylesheet">
     <style>
         body {
             padding-top: 5rem;
@@ -25,7 +26,7 @@
 
 <?= view('Myth\Auth\Views\_navbar') ?>
 
-<main role="main" class="container">
+<main role="main">
 	<?= $this->renderSection('main') ?>
 </main><!-- /.container -->
 
@@ -33,7 +34,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="<?= base_url('library/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+<script src="<?= base_url('library/bootstrap-5.1.3/bootstrap.bundle.min.js') ?>"></script>
 
 <?= $this->renderSection('pageScripts') ?>
 </body>
