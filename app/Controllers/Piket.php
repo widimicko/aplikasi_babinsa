@@ -79,6 +79,12 @@ class Piket extends BaseController {
       return redirect()->back()->withInput()->with('tx_error_message', 'Data tidak ditemukan');
     }
 
+    $lampiran = $this->lampiranModel->where('id_piket', $id)->findAll();
+
+    if (!empty($lampiran)) {
+      return redirect()->to('/piket')->with('tx_error_message', 'Silahkan hapus lampiran laporan terlebih dahulu');
+    }
+
     $this->piketModel->delete($id);
 
     return redirect()->to('/piket')->with('tx_success_message', 'Piket pada "'. $piket['tanggal'] .'" berhasil dihapus');
