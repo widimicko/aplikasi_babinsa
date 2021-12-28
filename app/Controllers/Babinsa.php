@@ -61,15 +61,13 @@ class Babinsa extends BaseController
 			$isFileUploaded = true;
 			unlink('image/babinsa/'. $babinsa['picture']);
 			$uploadedFile->move('image/babinsa/');
-			$imageCompressor = new ImageCompressor('babinsa', $uploadedFile->getName());
-			unlink('image/babinsa/'. $uploadedFile->getName());
 		} else if ($uploadedFile->getError() == 4) {
 			$isFileUploaded = false;
 		}
 
 		$this->userModel->update($id, [
 				'name' => $this->request->getVar('name'),
-				'picture' => $isFileUploaded ? $imageCompressor->new_name_image : $babinsa['picture'],
+				'picture' => $isFileUploaded ? $uploadedFile->getName() : $babinsa['picture'],
 				'birthdate' => $this->request->getVar('birthdate'),
 				'rank' => $this->request->getVar('rank'),
 		]);
@@ -83,10 +81,13 @@ class Babinsa extends BaseController
 		if(empty($babinsa)) {
 				return redirect()->back()->withInput()->with('tx_error_message', 'Data tidak ditemukan');
 		}
+
+    $filePath = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .'image/babinsa/' . $babinsa['picture'];
+
+		if ($filePath) {
+			unlink('image/babinsa/'. $babinsa['picture']);
+		}
 		
-
-		// unlink('image/babinsa/'. $babinsa['picture']);
-
 		$this->userModel->delete($id);
 
 		return redirect()->to('/babinsa')->with('tx_success_message', 'Anggota "'. $babinsa['name'] .'" berhasil dihapus');

@@ -16,10 +16,10 @@ class Home extends BaseController
     }
 
 
-    public function re_route() {
+    public function re_route()
+    {
         if (in_groups('admin') || in_groups('leader')) {
-            return redirect()->to('home');
-
+            return redirect()->to('babinsa');
         } else {
             return redirect()->to('member');
         }
@@ -52,5 +52,4 @@ class Home extends BaseController
         ];
         return view('piket/index', $data);
     }
-    
 }

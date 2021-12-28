@@ -109,7 +109,6 @@ class Member extends BaseController
         $uploadedFile->move('image/lampiran/');
 
       } else {
-        session()->setFlashData();
         return redirect()->to('member/piket/lampiran/add/'. $id_piket)->withInput()->with('tx_error_message', 'Lampiran harus diisi');
       }
       
@@ -153,7 +152,6 @@ class Member extends BaseController
         $uploadedFile->move('image/lampiran/');
 
       } else {
-        session()->setFlashData();
         return redirect()->to('member/piket/lampiran/add/'. $id_piket)->withInput()->with('tx_error_message', 'Lampiran harus diisi');
       }
       
@@ -168,7 +166,12 @@ class Member extends BaseController
     {
 
       $lampiran = $this->lampiranModel->find($id_lampiran);
-      unlink('image/lampiran/'. $lampiran['lampiran']);
+      $filePath = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .'image/babinsa/' . $lampiran['lampiran'];
+
+      if ($filePath) {
+        unlink('image/lampiran/'. $lampiran['lampiran']);
+      }
+
       $this->lampiranModel->delete($id_lampiran);
 
       return redirect()->to('member/piket/laporan/'. $id_piket)->with('tx_success_message', 'Lampiran berhasil dihapus');
